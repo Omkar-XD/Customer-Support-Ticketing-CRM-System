@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", system-ui, sans-serif;
+  --color-crm-brand: #2447B8;
+  --color-crm-brand-dark: #1F3FA8;
+  --color-crm-brand-hover: #19378F;
+  --color-crm-brand-light: #EEF3FF;
+  --color-crm-bg: #F5F7FB;
+  --color-crm-border: #E7EAF0;
+}
+
+body {
+  @apply bg-crm-bg text-[#172033];
+}
