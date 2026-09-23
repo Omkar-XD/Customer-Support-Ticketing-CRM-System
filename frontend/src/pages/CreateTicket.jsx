@@ -69,8 +69,8 @@ const CreateTicket = () => {
     setIsSubmitting(true);
 
     try {
-      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-      const response = await axios.post(`${API_URL}/tickets`, formData);
+      const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const response = await axios.post(`${BASE_URL}/api/tickets`, formData);
       const { ticket_id } = response.data;
       
       setSuccess(`Ticket ${ticket_id} created successfully! Redirecting...`);

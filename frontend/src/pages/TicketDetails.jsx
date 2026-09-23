@@ -34,8 +34,8 @@ const TicketDetails = () => {
   const fetchTicket = async () => {
     try {
       setLoading(true);
-      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-      const response = await axios.get(`${API_URL}/tickets/${ticketId}`);
+      const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const response = await axios.get(`${BASE_URL}/api/tickets/${ticketId}`);
       setTicketData(response.data);
       setStatus(response.data.ticket.status);
       setError(null);
@@ -68,8 +68,8 @@ const TicketDetails = () => {
         payload.notes = noteText;
       }
 
-      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-      const response = await axios.put(`${API_URL}/tickets/${ticketId}`, payload);
+      const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const response = await axios.put(`${BASE_URL}/api/tickets/${ticketId}`, payload);
       
       // Update local state with new data
       setTicketData(response.data);
@@ -92,8 +92,8 @@ const TicketDetails = () => {
     
     setIsDeleting(true);
     try {
-      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-      await axios.delete(`${API_URL}/tickets/${ticketId}`);
+      const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      await axios.delete(`${BASE_URL}/api/tickets/${ticketId}`);
       navigate('/');
     } catch (err) {
       console.error('Error deleting ticket:', err);

@@ -23,8 +23,8 @@ const AllTickets = () => {
     const fetchTickets = async () => {
       try {
         setLoading(true);
-        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-        let url = `${API_URL}/tickets?`;
+        const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+        let url = `${BASE_URL}/api/tickets?`;
         if (searchParam) url += `search=${encodeURIComponent(searchParam)}&`;
         if (statusParam && statusParam !== 'All') url += `status=${encodeURIComponent(statusParam)}&`;
         
