@@ -7,7 +7,9 @@ import {
   CheckCircle2, 
   AlertCircle,
   Plus,
-  User
+  User,
+  Edit,
+  Trash2
 } from 'lucide-react';
 
 const AllTickets = () => {
@@ -41,6 +43,18 @@ const AllTickets = () => {
 
     fetchTickets();
   }, [searchParam, statusParam]);
+
+  const handleDelete = async (ticketId) => {
+    if (!window.confirm('Are you sure you want to delete this ticket?')) return;
+    try {
+      const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      await axios.delete(`${BASE_URL}/api/tickets/${ticketId}`);
+      setTickets(tickets.filter(t => t.ticketId !== ticketId));
+    } catch (err) {
+      console.error('Error deleting ticket:', err);
+      alert('Failed to delete ticket');
+    }
+  };
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -163,12 +177,22 @@ const AllTickets = () => {
                       {new Date(ticket.createdAt).toLocaleDateString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-right">
-                      <Link 
-                        to={`/tickets/${ticket.ticketId}`}
-                        className="text-blue-600 hover:text-blue-800 font-medium"
-                      >
-                        Details
-                      </Link>
+                      <div className="flex items-center gap-3">
+                        <Link 
+                          to={`/tickets/${ticket.ticketId}`}
+                          className="text-slate-400 hover:text-blue-600 transition-colors"
+                          title="Edit"
+                        >
+                          <Edit className="w-4 h-4" />
+                        </Link>
+                        <button 
+                          onClick={() => handleDelete(ticket.ticketId)}
+                          className="text-slate-400 hover:text-red-600 transition-colors"
+                          title="Delete"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))

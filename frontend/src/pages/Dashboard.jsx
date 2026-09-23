@@ -10,7 +10,9 @@ import {
   ArrowRight,
   User,
   Calendar,
-  Activity
+  Activity,
+  Edit,
+  Trash2
 } from 'lucide-react';
 
 const Dashboard = () => {
@@ -44,6 +46,22 @@ const Dashboard = () => {
 
     fetchTickets();
   }, [searchParam, statusParam]);
+
+  const handleDelete = async (ticketId) => {
+    if (!window.confirm('Are you sure you want to delete this ticket?')) return;
+    try {
+      const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      await axios.delete(`${BASE_URL}/api/tickets/${ticketId}`);
+      setTickets(tickets.filter(t => t.ticketId !== ticketId));
+      
+      // Update closed tickets count if needed (Dashboard specific)
+      // Since we don't have the full state updated, re-fetching is best, but for UI feedback:
+      fetchDashboardStats();
+    } catch (err) {
+      console.error('Error deleting ticket:', err);
+      alert('Failed to delete ticket');
+    }
+  };
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -221,12 +239,22 @@ const Dashboard = () => {
                           {new Date(ticket.createdAt).toLocaleDateString()}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-right">
-                          <Link 
-                            to={`/tickets/${ticket.ticketId}`}
-                            className="text-blue-600 hover:text-blue-800 font-medium"
-                          >
-                            Details
-                          </Link>
+                          <div className="flex items-center justify-end gap-3">
+                            <Link 
+                              to={`/tickets/${ticket.ticketId}`}
+                              className="text-slate-400 hover:text-blue-600 transition-colors"
+                              title="Edit"
+                            >
+                              <Edit className="w-4 h-4" />
+                            </Link>
+                            <button 
+                              onClick={() => handleDelete(ticket.ticketId)}
+                              className="text-slate-400 hover:text-red-600 transition-colors"
+                              title="Delete"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     ))
